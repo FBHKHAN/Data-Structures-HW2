@@ -23,8 +23,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9D44B1681C81F8170010ED53 /* Warehouse.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Warehouse.hpp; sourceTree = "<group>"; };
+		9DA1B4281C8763200046403E /* Card.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Card.hpp; sourceTree = "<group>"; };
 		9DA218B41C6CE3360045CABA /* Assignment#2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Assignment#2"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DA218B71C6CE3360045CABA /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		9DA218C01C6CFC520045CABA /* File */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = File; path = "../../../../Library/Developer/Xcode/DerivedData/Assignment#2-ejbxjkofggjtipdklhoewofuwfuc/Build/Products/Debug/File"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +60,10 @@
 		9DA218B61C6CE3360045CABA /* Assignment#2 */ = {
 			isa = PBXGroup;
 			children = (
+				9D44B1681C81F8170010ED53 /* Warehouse.hpp */,
 				9DA218B71C6CE3360045CABA /* main.cpp */,
+				9DA1B4281C8763200046403E /* Card.hpp */,
+				9DA218C01C6CFC520045CABA /* File */,
 			);
 			path = "Assignment#2";
 			sourceTree = "<group>";
@@ -237,6 +243,7 @@
 				9DA218BD1C6CE3360045CABA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -49,6 +49,7 @@ void readInCards(Warehouse warehouses[]){
     vector<double> pricesOfAllItems;
     vector <int> itemsFromOtherCities;
     bool itemFound;
+    double tax = .1;
     
     recordFile.open("File");
     
@@ -99,15 +100,22 @@ void readInCards(Warehouse warehouses[]){
                         if (warehouses[warehouseNumber].quantities[itemNumber] >= card.amounts[itemNumber])
                         {
                             warehouses[warehouseNumber].quantities[itemNumber] -= card.amounts[itemNumber];
-                            pricesOfAllItems.push_back(priceChart[warehouseNumber]*card.amounts[itemNumber]);
+                            pricesOfAllItems.push_back(priceChart[itemNumber]*card.amounts[itemNumber]);
                         }
                         else {
                             itemFound = findLargestQuantity(warehouses, warehouses[warehouseNumber], card, itemNumber, itemsFromOtherCities); // insert bool here
                             if (itemFound) {
-                                double
-priceOfItem;
-                                priceOfItem = ((priceChart[warehouseNumber]*card.amounts[itemNumber])*.10)+card.amounts[itemNumber];
-                                pricesOfAllItems.push_back(priceOfItem);
+                                double priceBeforeTax;
+                                double priceAfterTax;
+                                
+                                priceBeforeTax = priceChart[itemNumber] * card.amounts[itemNumber];
+                                priceAfterTax = ((priceBeforeTax * tax) + priceBeforeTax);
+                                cout << "Price of Item: " << priceAfterTax <<"    " << priceChart[itemNumber] <<" "<< card.amounts[itemNumber]<< endl;
+                                pricesOfAllItems.push_back(priceAfterTax);
+                            
+                            } else{
+                                cout << "Item not found in other warehouses... " << endl;
+                                pricesOfAllItems.push_back(0);
                             }
                         }
                     }
@@ -123,6 +131,7 @@ priceOfItem;
                         double totalPrice = 0.0;
                         for (int q = 0; q < 3 ; q++) {
                             totalPrice += pricesOfAllItems[q];
+                            cout << "Price for Item No " << q << " is  ** " << pricesOfAllItems[q] << endl;
                         }
                         cout << "Price: " << totalPrice << endl;
                     
