@@ -20,6 +20,12 @@ public:
     string warehouseName;
     int quantities[3]= {0,0,0};
     
+    void printCurrentStock() {
+        cout << "\t" <<warehouseName << "\t\t" << quantities[0]
+        << " " <<quantities[1] << " " << quantities[2]
+        << endl << endl;
+    }
+    
 };
 
 #endif /* Warehouse_hpp */

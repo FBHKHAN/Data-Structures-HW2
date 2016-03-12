@@ -100,53 +100,52 @@ void readInCards(Warehouse warehouses[]){
                         if (warehouses[warehouseNumber].quantities[itemNumber] >= card.amounts[itemNumber])
                         {
                             warehouses[warehouseNumber].quantities[itemNumber] -= card.amounts[itemNumber];
-                            pricesOfAllItems.push_back(priceChart[itemNumber]*card.amounts[itemNumber]);
+                            pricesOfAllItems.push_back(priceChart[itemNumber] * card.amounts[itemNumber]);
                         }
                         else {
-                            itemFound = findLargestQuantity(warehouses, warehouses[warehouseNumber], card, itemNumber, itemsFromOtherCities); // insert bool here
+                            itemFound = findLargestQuantity(warehouses, warehouses[warehouseNumber], card, itemNumber, itemsFromOtherCities);
+                            
                             if (itemFound) {
+                                
                                 double priceBeforeTax;
                                 double priceAfterTax;
                                 
                                 priceBeforeTax = priceChart[itemNumber] * card.amounts[itemNumber];
-                                priceAfterTax = ((priceBeforeTax * tax) + priceBeforeTax);
-                                cout << "Price of Item: " << priceAfterTax <<"    " << priceChart[itemNumber] <<" "<< card.amounts[itemNumber]<< endl;
+                                priceAfterTax = (priceBeforeTax * tax) + priceBeforeTax;
                                 pricesOfAllItems.push_back(priceAfterTax);
                             
-                            } else{
-                                cout << "Item not found in other warehouses... " << endl;
+                            } else
                                 pricesOfAllItems.push_back(0);
-                            }
+                            
                         }
                     }
                     
-                    cout << "\t" << warehouses[warehouseNumber].warehouseName << "\t\t" << warehouses[warehouseNumber].quantities[0]
+                    warehouses[warehouseNumber].printCurrentStock();
+                    
+                    /*cout << "\t" << warehouses[warehouseNumber].warehouseName << "\t\t" << warehouses[warehouseNumber].quantities[0]
                     << " " << warehouses[warehouseNumber].quantities[1] << " " << warehouses[warehouseNumber].quantities[2]
-                    << endl << endl;
+                    << endl << endl;*/
                     
                     //
                     // Calculate the total price of Order.
                     //
     
                         double totalPrice = 0.0;
+                    
                         for (int q = 0; q < 3 ; q++) {
+                            
                             totalPrice += pricesOfAllItems[q];
-                            cout << "Price for Item No " << q << " is  ** " << pricesOfAllItems[q] << endl;
                         }
+                    
                         cout << "Price: " << totalPrice << endl;
                     
-                    
-                    pricesOfAllItems.clear(); // Clear the container for next cards prices.
+                    pricesOfAllItems.clear(); // Clear the price vector before processing the next card.
                     
                 }
         
             }
             
         }
-    }
-    
-    for (int i =0; i < 3; i++) {
-        cout << "Price: " << i << " " << priceChart[i] << endl;
     }
     
     recordFile.close();
@@ -181,11 +180,14 @@ bool findLargestQuantity(Warehouse warehouse[], Warehouse workingWarehouse, Card
         warehouse[warehouseWithLargestQuantity].quantities[item] -= card.amounts[item];
         itemsFromOtherCities.push_back(card.amounts[item]);
         
-        cout << card.amounts[item] << " of Item "<< item+1 << " shipped from " << warehouse[warehouseWithLargestQuantity].warehouseName << " to " << workingWarehouse.warehouseName << endl;
+        cout << endl << card.amounts[item] << " of Item "<< item+1 << " shipped from " << warehouse[warehouseWithLargestQuantity].warehouseName << " to " << workingWarehouse.warehouseName << endl;
+        
+        warehouse[warehouseWithLargestQuantity].printCurrentStock();
+        
         return true;
     }
     else{
-        cout << "Order Unfullfilled" << endl;
+        cout <<"Item " << item+1 << ": Order Unfullfilled" << endl;
         return false;
     }
 

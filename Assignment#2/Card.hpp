@@ -24,9 +24,9 @@ public:
     void printAllData() {
         
         if (cardType == 'O')
-            cout << "########| ORDER |########" << endl;
+            cout << "--------| ORDER |--------" << endl;
         else
-            cout << "********| SHIPMENT |********" << endl;
+            cout << "--------| SHIPMENT |--------" << endl;
         
         cout << "\t" << warehouseName << "\t\t" << amounts[0]
         << " " << amounts[1] << " " << amounts[2] << endl;
