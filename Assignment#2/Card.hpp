@@ -21,16 +21,19 @@ public:
     string warehouseName;
     int amounts[3];
     
-    void printAllData() {
+    string printAllData() {
+        
+        ostringstream stream;
         
         if (cardType == 'O')
-            cout << "--------| ORDER |--------" << endl;
+            stream << "---------------| ORDER |---------------" << endl << endl;
         else
-            cout << "--------| SHIPMENT |--------" << endl;
+            stream << "---------------| SHIPMENT |---------------" << endl << endl;
         
-        cout << "\t" << warehouseName << "\t\t" << amounts[0]
+        stream << "\t" << warehouseName << "\t\t" << amounts[0]
         << " " << amounts[1] << " " << amounts[2] << endl;
         
+        return stream.str();
     }
 };
 

@@ -20,10 +20,16 @@ public:
     string warehouseName;
     int quantities[3]= {0,0,0};
     
-    void printCurrentStock() {
-        cout << "\t" << warehouseName << "\t\t" << quantities[0]
+    string printCurrentStock() {
+        
+        ostringstream stream;
+        
+        stream << "\t" << warehouseName << "\t\t" << quantities[0]
         << " " << quantities[1] << " " << quantities[2]
         << endl << endl;
+        
+        return stream.str();
+        
     }
     
 };
