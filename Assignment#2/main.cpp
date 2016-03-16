@@ -1,11 +1,13 @@
+// FAROOQ KHAN
+//
+// CISC 3130 - Data Structures
+//  Assignment # 2
 //
 //  main.cpp
-//  Assignment#2
 //
 //  Created by Farooq Khan on 2/11/16.
 //  Copyright © 2016 Farooq Khan. All rights reserved.
-// $$$$$
-// NOTE!!! CHANGE NewYork's Amount3 from 11 to 1
+
 
 #include <iostream>
 #include <sstream>
@@ -16,9 +18,18 @@
 
 using namespace std;
 
-void readInCards(Warehouse []);
+//
+// Function Prototypes
+//
+
+void readAndProcessAllCards(Warehouse []);
 bool pricesFromStringToDouble(double *, string);
 bool findLargestQuantity(Warehouse [], Warehouse, Card, int, vector<int> &);
+
+
+//
+//  Some Glabal Variables
+//
 
 const int numberOfWarehouses = 5;
 string namesOfWarehouses[numberOfWarehouses] = {"New_York","Los_Angeles","Miami","Houston","Chicago"};
@@ -32,22 +43,27 @@ int main(){
         warehouses[i].warehouseName = namesOfWarehouses[i];
     }
     
-    readInCards(warehouses);
-    
-    //printAllCards(warehouses);
-    
+    readAndProcessAllCards(warehouses);
     
     return 0;
 }
 
-void readInCards(Warehouse warehouses[]){
+void readAndProcessAllCards(Warehouse warehouses[]){
+    
     ifstream recordFile;
     Card card;
     
     string pricesInString;
     double priceChart[3];
+    
+    //
+    // vector - pricesOfAllItems
+    // Holds the calculated price of each item processed
+    // which are then added to calculate the total price of the order.
+    //
     vector<double> pricesOfAllItems;
     vector <int> itemsFromOtherCities;
+    
     bool itemFound;
     double tax = .1;
     
@@ -57,8 +73,8 @@ void readInCards(Warehouse warehouses[]){
     
     pricesFromStringToDouble(priceChart, pricesInString);
     
-    while(!recordFile.eof())
-    {
+    while(!recordFile.eof()) {
+        
         recordFile >> card.cardType;
         recordFile >> card.warehouseName;
         recordFile >> card.amounts[0];
@@ -112,6 +128,7 @@ void readInCards(Warehouse warehouses[]){
                                 
                                 priceBeforeTax = priceChart[itemNumber] * card.amounts[itemNumber];
                                 priceAfterTax = (priceBeforeTax * tax) + priceBeforeTax;
+                                
                                 pricesOfAllItems.push_back(priceAfterTax);
                             
                             } else
@@ -121,10 +138,6 @@ void readInCards(Warehouse warehouses[]){
                     }
                     
                     warehouses[warehouseNumber].printCurrentStock();
-                    
-                    /*cout << "\t" << warehouses[warehouseNumber].warehouseName << "\t\t" << warehouses[warehouseNumber].quantities[0]
-                    << " " << warehouses[warehouseNumber].quantities[1] << " " << warehouses[warehouseNumber].quantities[2]
-                    << endl << endl;*/
                     
                     //
                     // Calculate the total price of Order.
@@ -153,7 +166,7 @@ void readInCards(Warehouse warehouses[]){
 
 //
 //  This function looks for the warehouse which holds the largest amount
-//  of a particular item and ships it to the warehouse from it was ordered.
+//  of a particular item and ships it to the warehouse, it was ordered.
 //
 
 bool findLargestQuantity(Warehouse warehouse[], Warehouse workingWarehouse, Card card, int item, vector<int> &itemsFromOtherCities) {
@@ -173,7 +186,7 @@ bool findLargestQuantity(Warehouse warehouse[], Warehouse workingWarehouse, Card
         }
     }
     //
-    //  Checks if Largest quantity found is greater than or equal to the desired amount.
+    //  Checks if the Largest quantity found is greater than or equal to the desired amount.
     //
     if (largestQuantityAvailable >= card.amounts[item]) {
         
@@ -193,89 +206,51 @@ bool findLargestQuantity(Warehouse warehouse[], Warehouse workingWarehouse, Card
 
 }
 
-//$$$$$
-// FUNCTION NOT FINALIZED!!! CHECK BEFORE SUBMISSION
+//
+//  This function separates numbers (prices),
+//  followed by a dollar sign, from a given string.
 //
 
-bool pricesFromStringToDouble(double *buffer, string input){
+bool pricesFromStringToDouble(double *buffer, string stringline){
     
+    int iterator = 0;
     size_t position = 0;
     
-    int indexForBuffer = 0;
-    
-    while (position < input.length()-1) {
+    while (position < stringline.length()-1) {
         
-        size_t positionOfDollarSign = input.find("$", position);
-        
-        //
-        //  If there are no dollar signs, just
-        //  set the position to out of range
-        //  of the while loop and it will exit.
-        //
-        
+        size_t positionOfDollarSign = stringline.find("$", position);
+
         if (positionOfDollarSign == string::npos) {
-            position = input.length();
+            position = stringline.length();
             break;
         }
         
-        size_t positionOfTrailingSpace = input.find(" ", positionOfDollarSign-1);
+        size_t positionOfSpace = stringline.find(" ", positionOfDollarSign-1);
         
-        //
-        //  We found the last dollar sign,
-        //  so take the substring from the
-        //  dollar sign until the end.
-        //
-        
-        if(positionOfTrailingSpace == string::npos){
+        if(positionOfSpace == string::npos){
+           
             
-            //
-            //  Get the index of the last character
-            //
-            
-            positionOfTrailingSpace = input.length()-1;
+            positionOfSpace = stringline.length()-1;
         }
         
+        string priceInStringType;
         
-        //
-        //  By this point, we have to indices to use
-        //  to grab a substring from the input.
-        //
+        priceInStringType = stringline.substr(positionOfDollarSign+1, positionOfSpace-positionOfDollarSign);
+
         
-        string priceValueAsString;
+        istringstream stringToDoubleConverter(priceInStringType);
         
-        priceValueAsString = input.substr(positionOfDollarSign+1, positionOfTrailingSpace-positionOfDollarSign);
-        
-        //
-        //  Convert the string into a double via a stream.
-        //
-        //  If for some reason the conversion fails, then
-        //  return false
-        //
-        
-        istringstream stringToDoubleConverter(priceValueAsString);
-        
-        if(!(stringToDoubleConverter >> buffer[indexForBuffer])){
+        if(!(stringToDoubleConverter >> buffer[iterator])){
             return false;
         }
         
-        //
-        //  Move the "header" of the loop to
-        //  the next part of the string.
-        //
+        position = positionOfSpace;
         
-        position = positionOfTrailingSpace;
-        
-        //
-        //  Don't forget to update the buffer index
-        //
-        
-        indexForBuffer++;
+        iterator++;
     }
     
     return true;
 }
-
-void manageOrder() {}
 
 
 
